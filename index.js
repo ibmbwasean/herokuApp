@@ -6,7 +6,7 @@ express()
   .use(express.static(path.join(__dirname, 'public')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
+  .get('/', (req, res) => res.render('pages/profile'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 const { Client } = require('pg');
@@ -18,10 +18,10 @@ const client = new Client({
 
 client.connect();
 
-client.query('SELECT Id, FirstName, LastName FROM salesforce.contact;', (err, dbres) => {
+client.query('SELECT Id, FirstName, LastName FROM salesforce.contact;', (err, res) => {
   if (err) throw err;
    res.render('pages/profile',{
-        results : dbres.rows
+        results : res.rows
       });
   client.end();
 });
