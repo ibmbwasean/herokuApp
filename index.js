@@ -19,9 +19,9 @@ const client = new Client({
 client.connect();
 
 client.query('SELECT Id, FirstName, LastName FROM salesforce.contact;', (err, res) => {
-  if (err) throw err;
+  if (err) {throw err};
 
-        return results : res.rows
+        results : res.rows
 
   client.end();
 });
