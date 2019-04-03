@@ -20,8 +20,8 @@ client.connect();
 
 client.query('SELECT Id, FirstName, LastName FROM salesforce.contact;', (err, res) => {
   if (err) throw err;
-   res.render('pages/profile',{
+
         results : res.rows
-      });
+
   client.end();
 });
