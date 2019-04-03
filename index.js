@@ -21,7 +21,7 @@ client.connect();
 client.query('SELECT Id, FirstName, LastName FROM salesforce.contact;', (err, res) => {
   if (err) {throw err};
 
-        results : res.rows
+        console.log(results : res.rows);
 
   client.end();
 });
