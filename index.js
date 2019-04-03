@@ -18,7 +18,7 @@ const client = new Client({
 
 client.connect();
 
-client.query('SELECT Id, FirstName, LastName FROM salesforce.tables;', (err, res) => {
+client.query('SELECT Id, FirstName, LastName FROM salesforce.contact;', (err, res) => {
   if (err) throw err;
    res.render('pages/profile',{
         results : dbRes.rows
