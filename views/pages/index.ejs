@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <% include ../partials/header.ejs %>
 </head>
 
 <body>
 
-  <% include ../partials/nav.ejs %>
-
-
     <h1>Getting Started with Node on Heroku Part 2</h1>
+    <ul>
+    <% results.forEach(function(r) { %>
+        <li>
+            <strong><%= r.Id %></strong>
+            <small><%= r.FirstName %></small>
+            <small><%= r.LastName %></small>
+        </li>
+    <% }); %>
+</ul>
     
 </body>
 </html>
