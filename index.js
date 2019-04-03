@@ -18,10 +18,10 @@ const client = new Client({
 
 client.connect();
 
-client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+client.query('SELECT Id, FirstName, LastName FROM salesforce.tables;', (err, res) => {
   if (err) throw err;
-  for (let row of res.rows) {
-    console.log(JSON.stringify(row));
-  }
+   res.render('pages/profile',{
+        results : dbRes.rows
+      });
   client.end();
 });
