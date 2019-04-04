@@ -9,6 +9,9 @@ express()
   .get('/', (req, res) => res.render('pages/index'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
+
+console.log("hey!");
+
 const { Client } = require('pg');
 
 const client = new Client({
@@ -19,6 +22,7 @@ const client = new Client({
 client.connect();
 
 client.query('SELECT Id, FirstName, LastName FROM salesforce.contact;', (err, res) => {
+
   if (err) throw err;
   for (let row of res.rows) {
     console.log(JSON.stringify(row));
