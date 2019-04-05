@@ -8,8 +8,8 @@ express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
-  
-  .get('/result',(req,res) => {
+
+  .get('/retrieveData',(req,res) => {
 	const { Client } = require('pg');
 	var a = [];
 	var b = ''
@@ -30,8 +30,6 @@ express()
 	    a.push(b)
 	  }
 
-	  console.log('LOOK HERERERERER>>>>',a);
-
 	res.render('pages/index', {
 		results : a
 	});
@@ -42,26 +40,4 @@ express()
 
   })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
-
-// const bodyParser = require('body-parser');
-
-// const app = express()
-
-// app.use(bodyParser.urlencoded({ extended: false }))
-// app.use(bodyParser.json())
-
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*")
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-//   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
-//   next()
-// });
-
-
-// app.get('/', (req, res) => res.send('Hello World!'))
-
-// app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
-
-
-
 
