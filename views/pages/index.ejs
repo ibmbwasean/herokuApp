@@ -2,24 +2,45 @@
 <html>
 <head>
 </head>
-
-<!--<style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+</script>
+<script>
+    $(document).ready(function(){
+        var email;
+        $("#submit").click(function(){
+            email = $("#email").val();
+            $.post("/ProfileDisplay"),{email: email}, function(data){
+              if(data==='done')
+              {
+                alert("login success");
+              }
+            }
+        });
+    })
+</script>
+<style>
     .header {
         background: #0A0023;
         text-align: center;
         font-size: 30px;
         color: white;
     }
-</style> -->
+</style> 
 
 <body>
   <div class="header">
     Bluewolf Heroku POC
   </div>
 
-    <h1>Getting Started with Node on Heroku Part 2</h1>
-    <p><%= results %></p>
+    <!--
+      <p><%= results %></p> -->
 
+      <div> Update Profile Form </div>
+
+        <div>Please specify your email address</div>
+        <input type = 'text' name = 'email' id = 'email' value=''>
+        <input type="button" id = 'submit' value = "Submit">
+    
     
 </body>
 </html>
