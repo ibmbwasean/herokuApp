@@ -4,43 +4,44 @@
 </head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
 </script>
+<!--
 <script>
     $(document).ready(function(){
         var email;
         $("#submit").click(function(){
             email = $("#email").val();
-            $.post("/ProfileDisplay"),{email: email}, function(data){
-              if(data==='done')
-              {
-                alert("login success");
-              }
-            }
+            $.post("/retrieveProfile",{email: email})
+            // window.open("/ProfileDisplay")
         });
     })
 </script>
+ -->
 <style>
     .header {
         background: #0A0023;
         text-align: center;
-        font-size: 30px;
+        font-size: 60px;
         color: white;
+        height: 150px;
+        width: 100%;
     }
 </style> 
 
 <body>
   <div class="header">
-    Bluewolf Heroku POC
+    Bluewolf Insurance - Heroku POC
   </div>
 
-    <!--
-      <p><%= results %></p> -->
+    
+      <!-- <p><%= results %></p> -->
 
       <div> Update Profile Form </div>
 
         <div>Please specify your email address</div>
-        <input type = 'text' name = 'email' id = 'email' value=''>
-        <input type="button" id = 'submit' value = "Submit">
-    
+        <form action='/retrieveProfile' method="POST">
+        <input type = 'text' name='email' id = 'email' value=''>
+        <input type="submit" id = 'submit' value = "Submit">
+        </form>
     
 </body>
 </html>
