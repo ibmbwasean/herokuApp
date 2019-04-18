@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+    </script>
+
+</head>
+
+
+<body>
+     <h3 class="text-secondary">Case Creation</h3>
+            <form action='/insertCase' method="POST"> 
+                <div class="form-group">
+                    
+                    <label>Case Type</label>
+                    <select class="form-control" id="type" name="type">
+
+                      <% caseTypes.forEach(function(type) {   %>
+                        <option><%=  type %></option>
+                        <%  }); %>
+
+                      </select>
+
+                    <br>
+                     <label>Case Reason</label>
+                     <select class="form-control" id="reason" name="reason">
+
+                      <% caseReasons.forEach(function(reason) {   %>
+                        <option><%=  reason %></option>
+                        <%  }); %>
+
+                      </select>
+                     <br>
+                     <label>Subject</label>   
+                     <input type="text" class="form-control" placeholder="Enter Subject" name="subject">
+                     <br>
+                     <label>Description</label>         
+                     <textarea class="form-control" name="description" placeholder="Enter Description"></textarea>
+                     <br>
+                    <center>
+                        <input type="submit" id = 'submit' value = "Submit" class="btn btn-primary">
+                    </center>
+                </div>
+            </form>
+
+</body>
+</html>

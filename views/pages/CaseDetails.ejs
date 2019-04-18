@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+    </script>
+
+</head>
+
+<body>
+
+    <!-- Display case information (for now no instant update function being implemented)--> 
+    
+    <h3 class="text-secondary">Case <%= item.casenumber %></h3>
+    <br>
+    <table class="table table-borderless">
+        <tbody>
+            <tr>
+                <td>Contact Name</td>
+                <td><%= user.name %></td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td><%= item.type %></td>
+            </tr>
+            <tr>
+                <td>Reason</td>
+                <td><%= item.reason %></td>
+            </tr>
+            <tr>
+                <td>Date/Time Opended</td>
+                <td><%= item.createddate %></td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td><%= item.status %></td>
+            </tr>
+            <tr>
+                <td>Priority</td>
+                <td><%= item.priority %></td>
+            </tr>
+            <tr>
+                <td>Contact Email</td>
+                <td><%= item.contactemail %></td>
+            </tr>
+            <tr>
+                <td>Subject</td>
+                <td><%= item.subject %></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><%= item.description %></td>
+            </tr>
+        </tbody>
+    </table>
+    <center>
+         <a href="/index" class="btn btn-primary" role="button" aria-pressed="true">Back to Home Page</a>
+    </center>
+</body>
+</html>
