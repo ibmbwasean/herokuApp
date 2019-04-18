@@ -189,13 +189,12 @@ var sf = require('node-salesforce');
 
   				);
 
-  				console.log("Case: " + JSON.Stringify(cases));
+  				conn.logout();
+
+  				res.render('pages/CaseCreated');	
 
   			})
 
-  			conn.logout();
-
-  			res.render('pages/CaseCreated');
   		})
 
   	});
