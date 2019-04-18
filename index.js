@@ -189,6 +189,8 @@ var sf = require('node-salesforce');
 
   				);
 
+  				console.log("Case: " + JSON.Stringify(cases));
+
   			})
 
   			conn.logout();
@@ -236,7 +238,7 @@ app.post('/saveProfile', (req, res) =>{
 		
 		})
 
-   app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+ app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 app.get('/api/init', (req, res) => {
   watson.initAssistant(

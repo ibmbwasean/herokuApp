@@ -94,7 +94,7 @@
                             <td><a href="/retrieveCaseDetails?id=<%= item.casenumber %>"><%= item.casenumber %></a></td>
                             <td><%= item.subject %></td>
                             <td><%= item.status %></td>
-                            <td><%= item.createddate.toISOString().slice(0,10) + " " + item.createddate.toISOString().slice(11,19)%></td>
+                            <td><%= new Date(item.createddate).toISOString().slice(0,10) + " " + new Date(item.createddate).toISOString().slice(11,19)%></td>
                          </tr>   
                          <% });%>
                     </tbody>
