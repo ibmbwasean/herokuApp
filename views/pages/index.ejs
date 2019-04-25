@@ -50,7 +50,7 @@
                     //create map to be generated under the div tag with id = 'map-canvas'
                     map = new google.maps.Map(document.getElementById('map-canvas'), {
                       center: pyrmont,
-                      zoom: 10
+                      zoom: 12
                     });
 
                     //Create Marker object of where you are 
@@ -67,13 +67,10 @@
                         var result = $.ajax({
                             url:URL,
                             type:"GET",
-                            async:false
+                            async:false,
+                            success: function(result){
 
-                        })
-                            
-                            //success: function(result){
-
-                                //
+                                
                                 locations = result;
                                 var infowindow =  new google.maps.InfoWindow({});
                                 var marker, count;
@@ -94,8 +91,8 @@
                                           }
                                         })(marker, count));
                                   }
-                            //}
-                        //})
+                            }
+                        })
 
                     })
 
@@ -192,7 +189,7 @@
                 <!-- Knowledge Management (Third tab of the Menu tab)   -->
                 <div class="tab-pane fade" id="article" role="tabpanel" aria-labelledby="article-tab">
                    <br>
-                   Search for nearby hospital under coverage:
+                   Search for nearby hospitals under coverage:
                     <br><br>
                     <!-- map -->
                     <center>
@@ -205,20 +202,19 @@
                       <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th scope="col"> Case Number </th>
-                                    <th scope="col"> Subject </th>
+                                    <th scope="col"> Hospital </th>
+                                    <th scope="col"> Type </th>
 
                                 </tr>
                             </thead>
                             <tbody>
-                                <%cases.forEach(function(item) {%>
+                                <script> locations.forEach(function(hospital) { </script>
                                  <tr>
-                                    <td><a href="/retrieveCaseDetails?id=<%= item.casenumber %>"><%= item.casenumber %></a></td>
-                                    <td><%= item.subject %></td>
-                                    <td><%= item.status %></td>
-                                    <td><%= new Date(item.createddate).toISOString().slice(0,10) + " " + new Date(item.createddate).toISOString().slice(11,19)%></td>
+                                    <td><script> hospital.title </script></td>
+                                    <td><script> hospital.type </script>></td>
+                                   
                                  </tr>   
-                                 <% });%>
+                                 <script> });</script>
                             </tbody>
                     </table>
                     </center>
