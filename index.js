@@ -147,7 +147,7 @@ var sf = require('node-salesforce');
   })
 
 
-  //Insert new case to POSTGRES and then sync to SF
+  //Insert new case to SF directly, then display on the app. Let the Heroku Connect to sync the record back to Postgres once ready
   app.post('/insertCase', (req, res) =>{
 
   		//req.body allows data to be received from the input form
@@ -157,6 +157,7 @@ var sf = require('node-salesforce');
   		var description = req.body.description;
   		var sfid = user.sfid;
 
+  		//Define connection to SF (auth2)
   		var conn = new sf.Connection({
   			oauth2 : {
   			loginUlr: 'https://login.salesforce.com',
@@ -165,13 +166,17 @@ var sf = require('node-salesforce');
   			redirectUri: 'https://tranquil-tundra-99018.herokuapp.com/',
   			accessToken: '6Cel800D0o000001RldH8880o00000221XtUx48l7xD5NnDu2rMGfxbhgpkauTf7AMRRD6kJjtMYsq0phdPoNpqE8NVI9EHVnxY8v9rtM1Y'
   		});
+
+  		//provide username, password + the security token collected from SF through GMail. Loging to the same email to refer
   		conn.login('ibmbwasean@gmail.com', 'bluewolf123mmkDMpFRAmdiL9ArvNV2JbcVY', function(error, userInfo){
 
-  			if(error) throw error;
+  		if(error) throw error;
 
+  		//Case object - Insert query to create new case
   		conn.sobject("Case").create({Type: type, Reason: reason, Subject: subject, Description: description, ContactId: sfid}, function(err, response){
   			if(err) throw err;
   				
+  		//Case object, use the id returned from the previous query to retrieve data, including auto generated CaseNumber directly from SF for real time display in app
   			conn.sobject("Case").find(
   				{Id : response.id},
   				'CaseNumber, Subject, Status, CreatedDate'
@@ -179,6 +184,7 @@ var sf = require('node-salesforce');
 
   				if(err) throw err;
 
+  				//create new case and push to global variable cases to display
   				cases.push(
   					{
   						"casenumber": records[0].CaseNumber,
@@ -211,6 +217,7 @@ app.post('/saveProfile', (req, res) =>{
 		var mobilePhone = req.body.mobilePhone;
 		var externalid = req.body.externalid;
 
+		//define connection
 		const client = new Client({
 			connectionString: process.env.DATABASE_URL || 'postgres://wppudawzdnutie:d2091f922901f53d65c28037ae5f01702e0c0dc8fb957eb39b15467fa1923124@ec2-23-23-173-30.compute-1.amazonaws.com:5432/d7as6ofv8qna9c',
 			ssl: true
@@ -218,6 +225,7 @@ app.post('/saveProfile', (req, res) =>{
 
 		client.connect();
 
+		//run query to update profile
 		client.query("UPDATE salesforce.contact SET Name = $1, Title = $2, MobilePhone = $3 WHERE externalID__c = $4", 
 			[name, title, mobilePhone, externalid],
 			(error, results) =>{
@@ -229,6 +237,7 @@ app.post('/saveProfile', (req, res) =>{
 				user.title = title;
 				user.mobilephone = mobilePhone;
 
+				//go to prodilfeUpdated page
 				res.render('pages/ProfileUpdated');
 
 				client.end();
@@ -239,6 +248,11 @@ app.post('/saveProfile', (req, res) =>{
 
  app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
+
+
+
+
+//Watson assistant set up (not yet used)
 app.get('/api/init', (req, res) => {
   watson.initAssistant(
     //callback function
@@ -268,69 +282,4 @@ app.post('/api/send', (req, res) => {
 })
 
 
-
-//retrieve profile (Contact) info
-
- //  app.post('/retrieveProfile', (req,res) => {
- //  		var email = req.body.email;
-
-	// 	client.connect();
-	// 	client.query('SELECT Name, Title, MobilePhone, externalID__c  FROM salesforce.contact WHERE email = $1', [email], (error, results) => {
-	// 		if (error) throw error;
-	// 		//res.json(results)
-
-	// 		var name = results.rows[0].name;
-	// 		var title = results.rows[0].title;
-	// 		var mobilePhone = results.rows[0].mobilephone;
-	// 		var externalid = results.rows[0].externalid__c;
-
-	// 		 res.render('pages/ProfileDisplay',  {
-	// 		 	name : name,
-	// 		 	title: title,
-	// 		 	mobilePhone: mobilePhone,
-	// 		 	externalid: externalid
-
-	// 		 });
-
-	// 		client.end();
-	// 	});
-	// })
-
-
-//retrieve Case related input values
-// app.get('/prepareCaseForm', (req, res) =>{
-// 			var caseTypes=[];
-// 			var caseReasons=[];
-
-// 		client.connect();
-
-// 		client.query("SELECT DISTINCT Type FROM salesforce.case;", (error, response) =>{
-// 			if (error) throw error;
-// 			for (let row of response.rows) {
-// 				caseTypes.push(row.type);
-// 				console.log("case type : " + row.type);
-// 			}
-			
-// 		})
-
-// 		client.query("SELECT DISTINCT Reason FROM salesforce.case;", (error, response) =>{
-// 			if (error) throw error;
-// 			for (let row of response.rows) {
-// 				caseReasons.push(row.reason);
-// 				console.log("case reason: " + row.reason);
-// 			}
-			
-// 		})
-
-// 		console.log("case type array: " + caseTypes);
-// 		console.log("case reason array: " + caseReasons);
-
-// 		client.commit(function(err, response){
-// 			res.render('pages/CaseForm', {
-// 				caseTypes : caseTypes,
-// 				caseReasons : caseReasons
-// 			})
-// 		})
-// 		client.end();
-// 	})
 

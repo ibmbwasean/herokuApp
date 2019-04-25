@@ -15,12 +15,14 @@
 
 <body>
      <h3 class="text-secondary">Case Creation</h3>
+
+            <!-- Form to create new case. '/insertCase' is a method defined in index.js -->
             <form action='/insertCase' method="POST"> 
                 <div class="form-group">
                     
                     <label>Case Type</label>
                     <select class="form-control" id="type" name="type">
-
+                    <!--  caseTypes if currently being used as global variable (created in index.js), generated when login to be used as drop down values  -->
                       <% caseTypes.forEach(function(type) {   %>
                         <option><%=  type %></option>
                         <%  }); %>
@@ -31,6 +33,7 @@
                      <label>Case Reason</label>
                      <select class="form-control" id="reason" name="reason">
 
+                    <!--  caseReason if currently being used as global variable (created in index.js), generated when login to be used as drop down values  -->
                       <% caseReasons.forEach(function(reason) {   %>
                         <option><%=  reason %></option>
                         <%  }); %>
