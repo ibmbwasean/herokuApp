@@ -40,9 +40,43 @@
         var infowindow;
         var service;
         var locs=[];
+        var markers=[];
+        var infowindow =  new google.maps.InfoWindow({});
 
 
-        async function initialize() {
+        function generateMarkers(locs){
+             var locations = document.getElementById('location-list');
+             var htmlContent='';
+             var marker, count;
+             //create marker on map
+                for (count = 0; count < locs.length; count++) {
+                    marker = new google.maps.Marker({
+                      position: new google.maps.LatLng(locs[count].field_latittude, locs[count].field_longitude),
+                      map: map,
+                      title: locs[count].title
+                    });
+
+                    markers.push(marker);
+
+
+                    htmlContent += '<tr><td>' + locs[count].title +'</td><td>'+ locs[count].field_type +'</td></tr>';
+
+                    //add title to be displayed on click event
+                    google.maps.event.addListener(marker, 'click', (function (marker, count) {
+                      return function () {
+                        infowindow.setContent(locs[count].title);
+                        infowindow.open(map, marker);
+                    }
+                   })(marker, count));
+                }
+                 
+                //generate content for the table below the map                                
+                locations.innerHTML = htmlContent;
+
+        }
+
+
+        function initialize() {
 
                 //set the current location (for now hardcode for simplicity per Thom's ask. To be model is to be able to detect the current location - if I have time TT)
                 var lat = 1.279788;
@@ -54,7 +88,7 @@
                 //create map to be generated under the div tag with id = 'map-canvas'
                 map = new google.maps.Map(document.getElementById('map-canvas'), {
                   center: pyrmont,
-                  zoom: 12
+                  zoom: 13
               });
 
                 //Create Marker object of where you are 
@@ -63,55 +97,61 @@
                     map: map,
                     title: loc
                 });
-
+        
                 //nearby hospital locations retrieved from Drupal (sample excel file to be shared)
-                $(document).ready(function(){
                     var locs_URL = 'https://cms.idx.services/en/retrieveAll';
                     var locs_result = $.parseJSON($.ajax({
                         url:locs_URL,
                         type:"GET",
                         async:false}).responseText);
                     locs = locs_result;
+         
+                    generateMarkers(locs);
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+       
+        function handleCheckboxChange(checkbox){
+            //destroy the markers
+            for (var i = 0; i < markers.length; i++) {
+                 markers[i].setMap(null);
+            }
 
-                    console.log(locs);
-                    
+            locs=[];
+            //Generate new one
+            if(document.getElementById('type-general').checked==true){
+                var locs_URL = 'https://cms.idx.services/en/retrieveLocationsByType?type=General';
+                var locs_result = $.parseJSON($.ajax({
+                url:locs_URL,
+                type:"GET",
+                async:false}).responseText);
+                locs_result.forEach(function(loc){
+                    locs.push(loc);
+                });
+            }
+            if (document.getElementById('type-community').checked==true){
+                var locs_URL = 'https://cms.idx.services/en/retrieveLocationsByType?type=Community';
+                var locs_result = $.parseJSON($.ajax({
+                url:locs_URL,
+                type:"GET",
+                async:false}).responseText);
+                locs_result.forEach(function(loc){
+                    locs.push(loc);
+                });
+            }
+            if(document.getElementById('type-specialists').checked==true){
+                var locs_URL = 'https://cms.idx.services/en/retrieveLocationsByType?type=Specialists';
+                var locs_result = $.parseJSON($.ajax({
+                url:locs_URL,
+                type:"GET",
+                async:false}).responseText);
+                locs_result.forEach(function(loc){
+                    locs.push(loc);
+                });
+            }
 
-
-                })
-
-                var infowindow =  new google.maps.InfoWindow({});
-                var marker, count;
-                var locations = document.getElementById('location-list');
-                var htmlContent='';
-
-
-                //create marker on map
-                for (count = 0; count < locs.length; count++) {
-                    marker = new google.maps.Marker({
-                      position: new google.maps.LatLng(locs[count].field_latittude, locs[count].field_longitude),
-                      map: map,
-                      title: locs[count].title
-                    });
-
-
-                    htmlContent += '<tr><td>' + locs[count].title +'</td><td>'+ locs[count].field_type +'</td></tr>';
-
-                    //add title to be displayed on click event
-                    google.maps.event.addListener(marker, 'click', (function (marker, count) {
-                      return function () {
-                        infowindow.setContent(locs[count].title);
-                        infowindow.open(map, marker);
-                    }
-                })(marker, count));
-                }
-                 
-                //generate content for the table below the map                                
-                locations.innerHTML = htmlContent;
+            generateMarkers(locs);
 
         }
-        
-        console.log("locs: "+locs);
-        google.maps.event.addDomListener(window, 'load', initialize);
        
 
     </script>
@@ -208,9 +248,9 @@
           <div id="map-canvas"></div>
           <br>
           <!-- Filter options -->
-          <input type="checkbox" name="general" value="general" checked> General
-          <input type="checkbox" name="community" value="community" checked> Community
-          <input type="checkbox" name="specialists" value="specialists" checked> Specialists
+          <input type="checkbox" id ="type-general" name="general" value="general" checked onchange='handleCheckboxChange(this);'> General &nbsp;
+          <input type="checkbox" id="type-community" name="community" value="community" checked onchange='handleCheckboxChange(this);'> Community &nbsp;
+          <input type="checkbox" id="type-specialists" name="specialists" value="specialists" checked onchange='handleCheckboxChange(this);'> Specialists &nbsp;
 
 
           <!--  Display list -->
