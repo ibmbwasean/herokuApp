@@ -43,38 +43,32 @@
         var markers=[];
         var infowindow =  new google.maps.InfoWindow({});
 
-
+        //create markers on map, create content for the list of the hospitals below the map and generate click in effect for marker
         function generateMarkers(locs){
              var locations = document.getElementById('location-list');
              var htmlContent='';
              var marker, count;
              //create marker on map
-                for (count = 0; count < locs.length; count++) {
-                    marker = new google.maps.Marker({
-                      position: new google.maps.LatLng(locs[count].field_latittude, locs[count].field_longitude),
-                      map: map,
-                      title: locs[count].title
-                    });
+            for (count = 0; count < locs.length; count++) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(locs[count].field_latittude, locs[count].field_longitude),
+                    map: map,
+                    title: locs[count].title
+                });
+                markers.push(marker);
+                htmlContent += '<tr><td>' + locs[count].title +'</td><td>'+ locs[count].field_type +'</td></tr>';
 
-                    markers.push(marker);
-
-
-                    htmlContent += '<tr><td>' + locs[count].title +'</td><td>'+ locs[count].field_type +'</td></tr>';
-
-                    //add title to be displayed on click event
-                    google.maps.event.addListener(marker, 'click', (function (marker, count) {
-                      return function () {
+                //add title to be displayed on click event
+                google.maps.event.addListener(marker, 'click', (function (marker, count) {
+                    return function () {
                         infowindow.setContent(locs[count].title);
                         infowindow.open(map, marker);
                     }
-                   })(marker, count));
-                }
-                 
-                //generate content for the table below the map                                
-                locations.innerHTML = htmlContent;
-
+                })(marker, count));
+            }  
+            //generate content for the table below the map                                
+            locations.innerHTML = htmlContent;
         }
-
 
         function initialize() {
 
@@ -82,9 +76,7 @@
                 var lat = 1.279788;
                 var lng = 103.853961;
                 var loc = "MBFC Tower 2"
-
                 var pyrmont = new google.maps.LatLng(lat,lng);
-
                 //create map to be generated under the div tag with id = 'map-canvas'
                 map = new google.maps.Map(document.getElementById('map-canvas'), {
                   center: pyrmont,
@@ -97,10 +89,11 @@
                     map: map,
                     title: loc
                 });
+                marker.setAnimation(google.maps.Animation.BOUNCE);
         
                 //nearby hospital locations retrieved from Drupal (sample excel file to be shared)
-                    var locs_URL = 'https://cms.idx.services/en/retrieveAll';
-                    var locs_result = $.parseJSON($.ajax({
+                var locs_URL = 'https://cms.idx.services/en/retrieveAll';
+                var locs_result = $.parseJSON($.ajax({
                         url:locs_URL,
                         type:"GET",
                         async:false}).responseText);
@@ -117,7 +110,7 @@
             }
 
             locs=[];
-            //Generate new one
+            //Retrieve new locations based on checkbox(es) checked
             if(document.getElementById('type-general').checked==true){
                 var locs_URL = 'https://cms.idx.services/en/retrieveLocationsByType?type=General';
                 var locs_result = $.parseJSON($.ajax({
@@ -148,12 +141,8 @@
                     locs.push(loc);
                 });
             }
-
             generateMarkers(locs);
-
         }
-       
-
     </script>
 
 </head>
