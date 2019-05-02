@@ -72,34 +72,34 @@
 
         function initialize() {
 
-                //set the current location (for now hardcode for simplicity per Thom's ask. To be model is to be able to detect the current location - if I have time TT)
-                var lat = 1.279788;
-                var lng = 103.853961;
-                var loc = "MBFC Tower 2"
-                var pyrmont = new google.maps.LatLng(lat,lng);
-                //create map to be generated under the div tag with id = 'map-canvas'
-                map = new google.maps.Map(document.getElementById('map-canvas'), {
-                  center: pyrmont,
-                  zoom: 13
-              });
+            //set the current location (for now hardcode for simplicity per Thom's ask. To be model is to be able to detect the current location - if I have time TT)
+            var lat = 1.279788;
+            var lng = 103.853961;
+            var loc = "MBFC Tower 2"
+            var pyrmont = new google.maps.LatLng(lat,lng);
+            //create map to be generated under the div tag with id = 'map-canvas'
+            map = new google.maps.Map(document.getElementById('map-canvas'), {
+                center: pyrmont,
+                zoom: 13
+            });
 
-                //Create Marker object of where you are 
-                marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(lat, lng),
-                    map: map,
-                    title: loc
-                });
-                marker.setAnimation(google.maps.Animation.BOUNCE);
+            //Create Marker object of where you are 
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(lat, lng),
+                map: map,
+                title: loc
+            });
+            marker.setAnimation(google.maps.Animation.BOUNCE);
         
-                //nearby hospital locations retrieved from Drupal (sample excel file to be shared)
-                var locs_URL = 'https://cms.idx.services/en/retrieveAll';
-                var locs_result = $.parseJSON($.ajax({
-                        url:locs_URL,
-                        type:"GET",
-                        async:false}).responseText);
-                    locs = locs_result;
+            //nearby hospital locations retrieved from Drupal (sample excel file to be shared)
+            var locs_URL = 'https://cms.idx.services/en/retrieveAll';
+            var locs_result = $.parseJSON($.ajax({
+                url:locs_URL,
+                type:"GET",
+                async:false}).responseText);
+                locs = locs_result;
          
-                    generateMarkers(locs);
+                generateMarkers(locs);
         }
         google.maps.event.addDomListener(window, 'load', initialize);
        
@@ -118,7 +118,7 @@
                 type:"GET",
                 async:false}).responseText);
                 locs_result.forEach(function(loc){
-                    locs.push(loc);
+                    locs.push(loc); 
                 });
             }
             if (document.getElementById('type-community').checked==true){
